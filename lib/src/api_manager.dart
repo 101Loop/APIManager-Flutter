@@ -19,4 +19,9 @@ class APIManager {
     _instance = APIManager._(baseUrl: baseUrl);
     return _instance;
   }
+
+  /// Dispose the [APIManager] instance
+  static dispose() {
+    _instance = null;
+  }
 }
