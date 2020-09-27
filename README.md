@@ -2,7 +2,8 @@
 
 # APIManager-Flutter
 
-`APIManager-Flutter` is an API manager for flutter applications that can manage the API calls from a single place.<br>
+`APIManager-Flutter` is an API manager for flutter applications that can manage
+the API calls from a single place.<br>
 
 ## Features
 
