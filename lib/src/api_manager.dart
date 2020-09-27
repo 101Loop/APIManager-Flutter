@@ -1,17 +1,21 @@
 /// A singleton class for making API requests
 class APIManager {
   /// Base url of the requests
-  static String baseUrl;
+  final String baseUrl;
 
   /// Instance of [APIManager]
-  static APIManager _instance = APIManager._getInstance();
+  static APIManager _instance;
 
-  /// Constructor for [APIManager]
-  factory APIManager(String baseUrl) {
-    APIManager.baseUrl = baseUrl;
+  /// Private constructor
+  APIManager._({this.baseUrl});
+
+  /// static method to return the static singleton instance
+  factory APIManager.getInstance({baseUrl}) {
+    /// Singleton is already created, return the created one
+    if (_instance != null) return _instance;
+
+    /// create and return a new instance of [APIManager]
+    _instance = APIManager._(baseUrl: baseUrl);
     return _instance;
   }
-
-  /// A private method that returns the
-  APIManager._getInstance();
 }
