@@ -8,6 +8,8 @@ class APIManager {
   /// Instance of [APIManager]
   static APIManager _instance;
 
+  String _key;
+
   /// Private constructor
   APIManager._({this.baseUrl});
 
@@ -26,21 +28,27 @@ class APIManager {
   }
 
   /// Save token, will be used throughout the app for authentication
-  saveToken(String token) async {
+  saveToken({String key = 'token', String token}) async {
+    assert(token != null);
+    
+    _key = key;
+
     /// initialize prefs, if not already done
     if (prefs == null) prefs = await SharedPreferences.getInstance();
 
     /// set token
-    prefs.setString('token', token);
+    await prefs.setString(_key, token);
   }
 
   /// Delete the token,
   deleteToken() async {
+    assert(_key != null);
+    
     /// initialize prefs, if not already done
     if (prefs == null) prefs = await SharedPreferences.getInstance();
 
     /// clear the prefs
-    prefs.clear();
+    prefs.remove(_key);
   }
 
   /// Dispose the [APIManager] instance
