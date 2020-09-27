@@ -6,7 +6,13 @@
 
 ## Features
 
+- [x] Manage token
 - [ ] Basic CRUD operations
-- [ ] Save token on logging in
 - [ ] Handle authorization
-- [ ] Delete token on logging out
+- [ ] Upload file
+- [ ] Download file
+- [ ] Enable logging
+
+## Author
+
+- [Dipanshu](https://github.com/iamdipanshusingh)
