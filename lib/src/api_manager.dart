@@ -30,7 +30,7 @@ class APIManager {
   /// Save token, will be used throughout the app for authentication
   saveToken({String key = 'token', String token}) async {
     assert(token != null);
-    
+
     _key = key;
 
     await _initializeToken();
@@ -42,7 +42,7 @@ class APIManager {
   /// Delete the token,
   deleteToken() async {
     assert(_key != null);
-    
+
     await _initializeToken();
 
     /// clear the prefs
