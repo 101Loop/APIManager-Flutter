@@ -33,8 +33,7 @@ class APIManager {
     
     _key = key;
 
-    /// initialize prefs, if not already done
-    if (prefs == null) prefs = await SharedPreferences.getInstance();
+    await _initializeToken();
 
     /// set token
     await prefs.setString(_key, token);
@@ -44,8 +43,7 @@ class APIManager {
   deleteToken() async {
     assert(_key != null);
     
-    /// initialize prefs, if not already done
-    if (prefs == null) prefs = await SharedPreferences.getInstance();
+    await _initializeToken();
 
     /// clear the prefs
     prefs.remove(_key);
@@ -54,5 +52,11 @@ class APIManager {
   /// Dispose the [APIManager] instance
   static dispose() {
     _instance = null;
+  }
+
+  /// Initialize [SharedPreferences] instance
+  _initializeToken() async {
+    /// initialize prefs, if not already done
+    if (prefs == null) prefs = await SharedPreferences.getInstance();
   }
 }
