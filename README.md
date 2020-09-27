@@ -13,6 +13,6 @@
 - [ ] Download file
 - [ ] Enable logging
 
-## Author
+## Author & Maintainer
 
 - [Dipanshu](https://github.com/iamdipanshusingh)
