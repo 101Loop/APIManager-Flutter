@@ -13,4 +13,11 @@ void main() {
     expect(instance.baseUrl, 'google');
     expect(instance1.baseUrl, 'google');
   });
+
+  test('check null base url assertion', () {
+    /// Check if the null assertion is being thrown or not
+    expect(() {
+      APIManager.getInstance();
+    }, throwsAssertionError);
+  });
 }
