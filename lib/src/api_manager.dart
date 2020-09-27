@@ -15,6 +15,7 @@ class APIManager {
     if (_instance != null) return _instance;
 
     /// create and return a new instance of [APIManager]
+    assert(baseUrl != null);
     _instance = APIManager._(baseUrl: baseUrl);
     return _instance;
   }
