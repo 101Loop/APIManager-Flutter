@@ -13,6 +13,7 @@ the API calls from a single place.<br>
 - [ ] Upload file
 - [ ] Download file
 - [ ] Enable logging
+- [ ] Manage token transaction along with the security
 
 ## Author & Maintainer
 
