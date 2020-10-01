@@ -22,7 +22,7 @@ jobs:
       - uses: stelynx/dart-full-coverage@v1.0.3
         with:
           package: flutter_api_manager
-          ignore: "example/"
+          ignore: "example/test/widget_test.dart"
       - run: flutter pub get
 
       - run: flutter analyze
