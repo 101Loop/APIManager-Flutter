@@ -25,7 +25,7 @@ the API calls from a single place.<br>
 
 
 ## Want to Contribute
-[Here's how you can start](https://github.com/101Loop/APIManager-Flutter/blob/master/CONTRIBUTING.md)
+[Here's how you can start]<br>(https://github.com/101Loop/APIManager-Flutter/blob/master/CONTRIBUTING.md)
 You are always WELCOME! We are are excited to see your awesome PRs.
 
  NOTE: Please abide by the [CODE OF CONDUCT.](https://github.com/101Loop/APIManager-Flutter/blob/master/CODE_OF_CONDUCT.md)
@@ -33,5 +33,5 @@ You are always WELCOME! We are are excited to see your awesome PRs.
 
 
 ## Author & Maintainer ✒️
- <td align="center"><a href="https://github.com/iamdipanshusingh"><img src="https://avatars3.githubusercontent.com/u/38358260?s=400&u=87bb5fe8efc842752dd8b192dc9d866864eaf4a4&v=4" width="100px;" alt=""/><br /><sub><b>DIPANSHU</b></sub></a><br /><a>💻</a></td>
-[# Dipanshu](https://github.com/iamdipanshusingh)
+ <td align="center"><a href="https://github.com/iamdipanshusingh"><img src="https://avatars3.githubusercontent.com/u/38358260?s=400&u=87bb5fe8efc842752dd8b192dc9d866864eaf4a4&v=4" width="100px;" alt=""/><br /><sub><b><td align = "center">DIPANSHU</b></td></sub></a><br /></td>
+
