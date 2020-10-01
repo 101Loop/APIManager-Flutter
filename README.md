@@ -22,6 +22,7 @@ the API calls from a single place.<br>
 - [ ] Download file
 - [ ] Enable logging
 - [ ] Manage token transaction along with the security
+- [ ] Support Multi environment base url
 
 
 ## Want to Contribute
@@ -35,5 +36,5 @@ You are always WELCOME! We are are excited to see your awesome PRs.
 
 
 ## Author & Maintainer ✒️
-[DIPANSHU](https://github.com/iamdipanshusingh)
+[Dipanshu](https://github.com/iamdipanshusingh)
 
