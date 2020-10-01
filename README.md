@@ -25,7 +25,8 @@ the API calls from a single place.<br>
 
 
 ## Want to Contribute
-[Here's how you can start]<br>(https://github.com/101Loop/APIManager-Flutter/blob/master/CONTRIBUTING.md)
+<br>
+[Here's how you can start](https://github.com/101Loop/APIManager-Flutter/blob/master/CONTRIBUTING.md)
 You are always WELCOME! We are are excited to see your awesome PRs.
 
  NOTE: Please abide by the [CODE OF CONDUCT.](https://github.com/101Loop/APIManager-Flutter/blob/master/CODE_OF_CONDUCT.md)
