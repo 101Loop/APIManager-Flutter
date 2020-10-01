@@ -22,12 +22,11 @@ jobs:
       - uses: stelynx/dart-full-coverage@v1.0.3
         with:
           package: flutter_api_manager
-          ignore: "example/test/widget_test.dart"
       - run: flutter pub get
 
       - run: flutter analyze
 
-      - run: flutter test --coverage .
+      - run: flutter test --coverage
 
       - uses: codecov/codecov-action@v1
         with:
