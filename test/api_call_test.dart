@@ -15,7 +15,7 @@ void main() {
     APIManager.dispose();
   });
 
-  group('test singleton instance', () {
+  group('test makeRequest method', () {
     /// Create an instance of [APIManager]
     APIManager instance = APIManager.getInstance(baseUrl: 'base_url/');
 
