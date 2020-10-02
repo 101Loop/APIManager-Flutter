@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_api_manager/src/model/response.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 enum APIMethod { get, post, put, patch, delete }
 
@@ -17,16 +17,17 @@ class APIManager {
   /// Instance of [APIManager]
   static APIManager _instance;
 
-  String _key;
-
   /// Private constructor
   APIManager._({this.baseUrl});
 
-  /// Shared prefs instance
-  static SharedPreferences prefs;
+  /// Storage instance
+  static FlutterSecureStorage _storage;
 
   /// static method to return the static singleton instance
   factory APIManager.getInstance({baseUrl}) {
+    /// Initialize storage, if not already initialized
+    if (_storage == null) _storage = FlutterSecureStorage();
+
     /// Singleton is already created, return the created one
     if (_instance != null) return _instance;
 
@@ -37,44 +38,22 @@ class APIManager {
   }
 
   /// Save token, will be used throughout the app for authentication
-  saveToken({String key = 'token', String token}) async {
-    assert(token != null);
-
-    _key = key;
-
-    await _initializeToken();
+  saveToken(String token) async {
+    assert(token != '');
 
     /// set token
-    await prefs.setString(_key, token);
-  }
-
-  /// gets token from the shared prefs
-  _getToken() async {
-    await _initializeToken();
-
-    /// get token
-    prefs.getString(_key);
+    await _storage.write(key: 'token', value: token);
   }
 
   /// Delete the token,
   deleteToken() async {
-    assert(_key != null);
-
-    await _initializeToken();
-
-    /// clear the prefs
-    prefs.remove(_key);
+    /// clear the storage
+    _storage.deleteAll();
   }
 
   /// Dispose the [APIManager] instance
   static dispose() {
     _instance = null;
-  }
-
-  /// Initialize [SharedPreferences] instance
-  _initializeToken() async {
-    /// initialize prefs, if not already done
-    if (prefs == null) prefs = await SharedPreferences.getInstance();
   }
 
   /// Makes the API request here
@@ -133,5 +112,9 @@ class APIManager {
     } catch (error) {
       return Response(error: error.toString(), data: responseBody, rawData: response, isSuccessful: false);
     }
+  }
+
+  Future<String> _getToken() async {
+    return await _storage.read(key: 'token');
   }
 }
