@@ -1,7 +1,16 @@
+import 'dart:convert';
+
+import 'package:flutter_api_manager/src/model/response.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+enum APIMethod { get, post, put, patch, delete }
 
 /// A singleton class for making API requests
 class APIManager {
+  /// Create http client, used for making API calls
+  static http.Client client = http.Client();
+
   /// Base url of the requests
   final String baseUrl;
 
@@ -39,6 +48,14 @@ class APIManager {
     await prefs.setString(_key, token);
   }
 
+  /// gets token from the shared prefs
+  _getToken() async {
+    await _initializeToken();
+
+    /// get token
+    prefs.getString(_key);
+  }
+
   /// Delete the token,
   deleteToken() async {
     assert(_key != null);
@@ -58,5 +75,63 @@ class APIManager {
   _initializeToken() async {
     /// initialize prefs, if not already done
     if (prefs == null) prefs = await SharedPreferences.getInstance();
+  }
+
+  /// Makes the API request here
+  ///
+  /// [endPoint] - Endpoint of the API
+  /// [method] - Type of [APIMethod]. See [APIMethod] enum for all the available methods
+  /// [data] - data to be passed in the request in [Map] format
+  /// [isAuthenticated] - if authenticated, Bearer token authorization will be added, otherwise not
+  Future<Response> makeRequest(String endPoint, APIMethod method, {Map data, bool isAuthenticated = true}) async {
+    /// Set url
+    final String url = baseUrl + endPoint;
+
+    /// Create non-auth headers
+    final headers = {'Content-Type': 'application/json'};
+
+    /// Add bearer token, if the API call is to be authenticated
+    if (isAuthenticated) {
+      String token = await _getToken();
+
+      // TODO: add an assertion or check here, for null token
+
+      headers.addAll({'Authorization': 'Bearer $token}'});
+    }
+
+    http.Response response;
+    var responseBody;
+
+    try {
+      /// switch on the basis of method provided and make relevant API call
+      switch (method) {
+        case APIMethod.get:
+          response = await client.get(url, headers: headers);
+          break;
+        case APIMethod.post:
+          response = await client.post(url, headers: headers, body: json.encode(data));
+          break;
+        case APIMethod.put:
+          response = await client.put(url, headers: headers, body: json.encode(data));
+          break;
+        case APIMethod.patch:
+          response = await client.patch(url, headers: headers, body: json.encode(data));
+          break;
+        case APIMethod.delete:
+          response = await client.delete(url, headers: headers);
+          break;
+      }
+
+      /// parse the response
+      responseBody = json.decode(response.body);
+
+      /// status code of the response
+      int statusCode = response.statusCode;
+
+      /// return the Response
+      return Response(data: responseBody, rawData: response, statusCode: statusCode, isSuccessful: statusCode >= 200 && statusCode < 300);
+    } catch (error) {
+      return Response(error: error.toString(), data: responseBody, rawData: response, isSuccessful: false);
+    }
   }
 }
