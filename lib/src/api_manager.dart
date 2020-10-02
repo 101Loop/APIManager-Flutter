@@ -87,7 +87,13 @@ class APIManager {
     final headers = {'Content-Type': 'application/json'};
 
     /// Add bearer token, if the API call is to be authenticated
-    if (isAuthenticated) headers.addAll({'Authorization': 'Bearer ${await _getToken()}'});
+    if (isAuthenticated) {
+      String token = await _getToken();
+
+      // TODO: add an assertion or check here, for null token
+
+      headers.addAll({'Authorization': 'Bearer $token}'});
+    }
 
     http.Response response;
     var responseBody;
