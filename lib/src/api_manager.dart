@@ -10,7 +10,7 @@ enum APIMethod { get, post, put, patch, delete }
 /// A singleton class for making API requests
 class APIManager {
   /// Create http client, used for making API calls
-  http.Client client = http.Client();
+  static http.Client client = http.Client();
 
   /// Base url of the requests
   final String baseUrl;
@@ -84,13 +84,13 @@ class APIManager {
     final String url = baseUrl + endPoint;
 
     /// Create non-auth headers
-    final Map headers = {'Content-Type': 'application/json'};
+    final headers = {'Content-Type': 'application/json'};
 
     /// Add bearer token, if the API call is to be authenticated
     if (isAuthenticated) headers.addAll({'Authorization': 'Bearer ${await _getToken()}'});
 
     http.Response response;
-    String responseBody;
+    var responseBody;
 
     try {
       /// switch on the basis of method provided and make relevant API call
