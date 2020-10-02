@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter_api_manager/src/model/response.dart';
 import 'package:http/http.dart' as http;
@@ -121,14 +120,12 @@ class APIManager {
       /// parse the response
       responseBody = json.decode(response.body);
 
-      /// return the Response
-      if (response.statusCode == HttpStatus.ok || response.statusCode == HttpStatus.accepted || response.statusCode == HttpStatus.created || response.statusCode == HttpStatus.noContent) {
-        return Response(data: responseBody, rawData: response, statusCode: response.statusCode, isSuccessful: true);
-      }
-    } catch (error) {
-      return Response(error: error.toString(), statusCode: response.statusCode, data: responseBody, rawData: response, isSuccessful: false);
-    }
+      int statusCode = response.statusCode;
 
-    return Response(error: 'Something went wrong', isSuccessful: false);
+      /// return the Response
+      return Response(data: responseBody, rawData: response, statusCode: statusCode, isSuccessful: statusCode >= 200 && statusCode < 300);
+    } catch (error) {
+      return Response(error: error.toString(), data: responseBody, rawData: response, isSuccessful: false);
+    }
   }
 }
