@@ -45,6 +45,19 @@ class APIManager {
     await _storage.write(key: 'token', value: token);
   }
 
+  /// Returns the token from the [_storage]
+  Future<String> _getToken() async {
+    String token;
+
+    try {
+      token = await _storage.read(key: 'token');
+    } catch (_) {
+      /// TODO: handle the [PlatformException] here
+    }
+
+    return token;
+  }
+
   /// Delete the token,
   deleteToken() async {
     /// clear the storage
@@ -112,9 +125,5 @@ class APIManager {
     } catch (error) {
       return Response(error: error.toString(), data: responseBody, rawData: response, isSuccessful: false);
     }
-  }
-
-  Future<String> _getToken() async {
-    return await _storage.read(key: 'token');
   }
 }

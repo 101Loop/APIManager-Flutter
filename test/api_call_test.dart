@@ -16,6 +16,9 @@ void main() {
   });
 
   group('test makeRequest method', () {
+    /// Ensures that everything is bounded correctly
+    TestWidgetsFlutterBinding.ensureInitialized();
+
     /// Create an instance of [APIManager]
     APIManager instance = APIManager.getInstance(baseUrl: 'base_url/');
 
