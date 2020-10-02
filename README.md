@@ -15,13 +15,13 @@ the API calls from a single place.<br>
 
 # Features
  Here's the list of your all-in-one service
-- [X] Manage token 
+- [X] Manage token transaction
+- [x] Secured token transaction
 - [x] Basic CRUD operations
 - [ ] Handle authorization
 - [ ] Upload file
 - [ ] Download file
 - [ ] Enable logging
-- [ ] Manage token transaction along with the security
 - [ ] Support Multi environment base url
 
 
