@@ -78,6 +78,11 @@ class APIManager {
   }
 
   /// Makes the API request here
+  ///
+  /// [endPoint] - Endpoint of the API
+  /// [method] - Type of [APIMethod]. See [APIMethod] enum for all the available method
+  /// [data] - data to be passed in the request in [Map] format
+  /// [isAuthenticated] - if authenticated, Bearer token authorization will be added, otherwise not
   Future<Response> makeRequest(String endPoint, APIMethod method, {Map data, bool isAuthenticated = true}) async {
     /// Set url
     final String url = baseUrl + endPoint;
@@ -120,6 +125,7 @@ class APIManager {
       /// parse the response
       responseBody = json.decode(response.body);
 
+      /// status code of the response
       int statusCode = response.statusCode;
 
       /// return the Response
