@@ -1,6 +1,5 @@
 import 'package:flutter_api_manager/src/api_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   /// Makes sure that all the previous instances are disposed off.
@@ -42,116 +41,48 @@ void main() {
     });
   });
 
-  group('test token feature', () {
-    /// Ensure that test widgets binding is initialized
+  group('test token is being saved and deleted properly or not', () {
     TestWidgetsFlutterBinding.ensureInitialized();
 
-    /// Create singleton instance for [APIManager]
-    APIManager apiManager = APIManager.getInstance(baseUrl: 'base_url');
-
     test('check token is being saved', () async {
-      /// Create [SharedPreferences] instance
-      APIManager.prefs = await SharedPreferences.getInstance();
+      /// Create an instance of [APIManager]
+      APIManager instance = APIManager.getInstance(baseUrl: 'base_url');
 
-      /// Save token
-      await apiManager.saveToken(token: 'my_token');
+      await instance.login('token123');
 
-      expect(APIManager.prefs.getString('token'), 'my_token');
+      var result = await instance.isLoggedIn();
+
+      /// Check if the user is logged in
+      expect(result, true);
     });
 
-    test('check null is being returned for invalid key', () async {
-      /// Create [SharedPreferences] instance
-      APIManager.prefs = await SharedPreferences.getInstance();
+    test('check the user is logged out', () async {
+      /// Create an instance of [APIManager]
+      APIManager instance = APIManager.getInstance(baseUrl: 'base_url');
 
-      /// Save token
-      await apiManager.saveToken(token: 'my_token');
+      /// Simulating that the token is null
+      await instance.logout();
 
-      expect(APIManager.prefs.getString('random_key'), null);
+      var result = await instance.isLoggedIn();
+
+      /// Check if the user is logged out
+      expect(result, false);
     });
 
-    test('check token is being returned for the named key', () async {
-      /// Create [SharedPreferences] instance
-      APIManager.prefs = await SharedPreferences.getInstance();
+    test('check null token raises assertion error', () async {
+      /// Create an instance of [APIManager]
+      APIManager instance = APIManager.getInstance(baseUrl: 'base_url');
 
-      /// Save token with a named key
-      await apiManager.saveToken(key: 'random_key', token: 'my_token');
-
-      expect(APIManager.prefs.getString('random_key'), 'my_token');
+      /// Check if the user is logged out
+      expect(() async => {await instance.login(null)}, throwsAssertionError);
     });
 
-    test('check delete token is working fine', () async {
-      /// Create [SharedPreferences] instance
-      APIManager.prefs = await SharedPreferences.getInstance();
+    test('check empty token raises assertion error', () async {
+      /// Create an instance of [APIManager]
+      APIManager instance = APIManager.getInstance(baseUrl: 'base_url');
 
-      /// Save token
-      await apiManager.saveToken(token: 'my_token');
-
-      /// Delete token
-      await apiManager.deleteToken();
-
-      expect(APIManager.prefs.getString('token'), null);
-    });
-
-    test('check delete token is working fine for named key', () async {
-      /// Create [SharedPreferences] instance
-      APIManager.prefs = await SharedPreferences.getInstance();
-
-      /// Save token with named key
-      await apiManager.saveToken(key: 'random_key', token: 'my_token');
-
-      /// Delete token
-      await apiManager.deleteToken();
-
-      expect(APIManager.prefs.getString('random_key'), null);
-    });
-
-    test('check delete token for named key, only deletes that key and nothing else', () async {
-      /// Create [SharedPreferences] instance
-      APIManager.prefs = await SharedPreferences.getInstance();
-
-      /// Save token with named key
-      await apiManager.saveToken(key: 'random_key', token: 'my_token');
-
-      /// Save another random key, value pair
-      await APIManager.prefs.setString('key', 'value');
-
-      /// Delete token
-      await apiManager.deleteToken();
-
-      expect(APIManager.prefs.getString('key'), 'value');
-    });
-
-    test('check on saving the null key, assertion error is raised', () async {
-      /// Create [SharedPreferences] instance
-      APIManager.prefs = await SharedPreferences.getInstance();
-
-      expect(() async => {await apiManager.saveToken()}, throwsAssertionError);
-    });
-
-    test('check that on saving the token the prefs get initialized, if not already', () async {
-      /// Simulating that the prefs is null
-      APIManager.prefs = null;
-
-      /// Save token
-      await apiManager.saveToken(token: 'token');
-
-      expect(APIManager.prefs.getString('token'), 'token');
-    });
-
-    test('check that on deleting the token the prefs get initialized, if not already', () async {
-      /// Create [SharedPreferences] instance
-      APIManager.prefs = await SharedPreferences.getInstance();
-
-      /// Save token with named key
-      await apiManager.saveToken(token: 'token');
-
-      /// Simulating that the prefs is null
-      APIManager.prefs = null;
-
-      /// Save token
-      await apiManager.deleteToken();
-
-      expect(APIManager.prefs.getString('token'), null);
+      /// Check if the user is logged out
+      expect(() async => {await instance.login('')}, throwsAssertionError);
     });
   });
 }

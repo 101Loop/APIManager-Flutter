@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_api_manager/src/model/response.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 enum APIMethod { get, post, put, patch, delete }
 
@@ -17,16 +17,19 @@ class APIManager {
   /// Instance of [APIManager]
   static APIManager _instance;
 
-  String _key;
+  String _token;
 
   /// Private constructor
   APIManager._({this.baseUrl});
 
-  /// Shared prefs instance
-  static SharedPreferences prefs;
+  /// Storage instance
+  static FlutterSecureStorage _storage;
 
   /// static method to return the static singleton instance
   factory APIManager.getInstance({baseUrl}) {
+    /// Initialize storage, if not already initialized
+    if (_storage == null) _storage = FlutterSecureStorage();
+
     /// Singleton is already created, return the created one
     if (_instance != null) return _instance;
 
@@ -37,44 +40,47 @@ class APIManager {
   }
 
   /// Save token, will be used throughout the app for authentication
-  saveToken({String key = 'token', String token}) async {
-    assert(token != null);
-
-    _key = key;
-
-    await _initializeToken();
+  login(String token) async {
+    assert(token != null && token.isNotEmpty);
 
     /// set token
-    await prefs.setString(_key, token);
+    _token = token;
+    try {
+      await _storage.write(key: 'token', value: token);
+    } catch (_) {
+      /// TODO: handle the [PlatformException] here
+    }
   }
 
-  /// gets token from the shared prefs
-  _getToken() async {
-    await _initializeToken();
+  /// Returns the token from the [_storage]
+  Future<String> _getToken() async {
+    try {
+      _token = await _storage.read(key: 'token');
+    } catch (_) {
+      /// TODO: handle the [PlatformException] here
+    }
 
-    /// get token
-    prefs.getString(_key);
+    return _token;
+  }
+
+  /// Check if the user is logged in or not
+  Future<bool> isLoggedIn() async {
+    return await _getToken() != null;
   }
 
   /// Delete the token,
-  deleteToken() async {
-    assert(_key != null);
-
-    await _initializeToken();
-
-    /// clear the prefs
-    prefs.remove(_key);
+  logout() async {
+    /// clear the storage
+    try {
+      await _storage.deleteAll();
+    } catch (_) {
+      /// TODO: handle the [PlatformException] here
+    }
   }
 
   /// Dispose the [APIManager] instance
   static dispose() {
     _instance = null;
-  }
-
-  /// Initialize [SharedPreferences] instance
-  _initializeToken() async {
-    /// initialize prefs, if not already done
-    if (prefs == null) prefs = await SharedPreferences.getInstance();
   }
 
   /// Makes the API request here
