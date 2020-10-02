@@ -16,7 +16,7 @@ the API calls from a single place.<br>
 # Features
  Here's the list of your all-in-one service
 - [X] Manage token 
-- [ ] Basic CRUD operations
+- [x] Basic CRUD operations
 - [ ] Handle authorization
 - [ ] Upload file
 - [ ] Download file
