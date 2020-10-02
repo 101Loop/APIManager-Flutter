@@ -17,6 +17,8 @@ class APIManager {
   /// Instance of [APIManager]
   static APIManager _instance;
 
+  String _token;
+
   /// Private constructor
   APIManager._({this.baseUrl});
 
@@ -39,29 +41,41 @@ class APIManager {
 
   /// Save token, will be used throughout the app for authentication
   saveToken(String token) async {
-    assert(token != '');
+    assert(token != null && token.isNotEmpty);
 
     /// set token
-    await _storage.write(key: 'token', value: token);
+    _token = token;
+    try {
+      await _storage.write(key: 'token', value: token);
+    } catch (_) {
+      /// TODO: handle the [PlatformException] here
+    }
   }
 
   /// Returns the token from the [_storage]
   Future<String> _getToken() async {
-    String token;
-
     try {
-      token = await _storage.read(key: 'token');
+      _token = await _storage.read(key: 'token');
     } catch (_) {
       /// TODO: handle the [PlatformException] here
     }
 
-    return token;
+    return _token;
+  }
+
+  /// Check if the user is logged in or not
+  Future<bool> isLoggedIn() async {
+    return await _getToken() != null;
   }
 
   /// Delete the token,
   deleteToken() async {
     /// clear the storage
-    _storage.deleteAll();
+    try {
+      await _storage.deleteAll();
+    } catch (_) {
+      /// TODO: handle the [PlatformException] here
+    }
   }
 
   /// Dispose the [APIManager] instance

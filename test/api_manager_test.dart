@@ -40,4 +40,49 @@ void main() {
       expect(APIManager.getInstance(baseUrl: 'base url').baseUrl, 'base url');
     });
   });
+
+  group('test token is being saved and deleted properly or not', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+
+    test('check token is being saved', () async {
+      /// Create an instance of [APIManager]
+      APIManager instance = APIManager.getInstance(baseUrl: 'base_url');
+
+      await instance.saveToken('token123');
+
+      var result = await instance.isLoggedIn();
+
+      /// Check if the user is logged in
+      expect(result, true);
+    });
+
+    test('check the user is logged out', () async {
+      /// Create an instance of [APIManager]
+      APIManager instance = APIManager.getInstance(baseUrl: 'base_url');
+
+      /// Simulating that the token is null
+      await instance.deleteToken();
+
+      var result = await instance.isLoggedIn();
+
+      /// Check if the user is logged out
+      expect(result, false);
+    });
+
+    test('check null token raises assertion error', () async {
+      /// Create an instance of [APIManager]
+      APIManager instance = APIManager.getInstance(baseUrl: 'base_url');
+
+      /// Check if the user is logged out
+      expect(() async => {await instance.saveToken(null)}, throwsAssertionError);
+    });
+
+    test('check empty token raises assertion error', () async {
+      /// Create an instance of [APIManager]
+      APIManager instance = APIManager.getInstance(baseUrl: 'base_url');
+
+      /// Check if the user is logged out
+      expect(() async => {await instance.saveToken('')}, throwsAssertionError);
+    });
+  });
 }
