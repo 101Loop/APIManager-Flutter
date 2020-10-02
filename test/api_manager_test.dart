@@ -48,7 +48,7 @@ void main() {
       /// Create an instance of [APIManager]
       APIManager instance = APIManager.getInstance(baseUrl: 'base_url');
 
-      await instance.saveToken('token123');
+      await instance.login('token123');
 
       var result = await instance.isLoggedIn();
 
@@ -61,7 +61,7 @@ void main() {
       APIManager instance = APIManager.getInstance(baseUrl: 'base_url');
 
       /// Simulating that the token is null
-      await instance.deleteToken();
+      await instance.logout();
 
       var result = await instance.isLoggedIn();
 
@@ -74,7 +74,7 @@ void main() {
       APIManager instance = APIManager.getInstance(baseUrl: 'base_url');
 
       /// Check if the user is logged out
-      expect(() async => {await instance.saveToken(null)}, throwsAssertionError);
+      expect(() async => {await instance.login(null)}, throwsAssertionError);
     });
 
     test('check empty token raises assertion error', () async {
@@ -82,7 +82,7 @@ void main() {
       APIManager instance = APIManager.getInstance(baseUrl: 'base_url');
 
       /// Check if the user is logged out
-      expect(() async => {await instance.saveToken('')}, throwsAssertionError);
+      expect(() async => {await instance.login('')}, throwsAssertionError);
     });
   });
 }

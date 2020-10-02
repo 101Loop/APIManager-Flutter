@@ -40,7 +40,7 @@ class APIManager {
   }
 
   /// Save token, will be used throughout the app for authentication
-  saveToken(String token) async {
+  login(String token) async {
     assert(token != null && token.isNotEmpty);
 
     /// set token
@@ -69,7 +69,7 @@ class APIManager {
   }
 
   /// Delete the token,
-  deleteToken() async {
+  logout() async {
     /// clear the storage
     try {
       await _storage.deleteAll();
