@@ -22,11 +22,12 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] Test A
 - [ ] Test B
 
+<!---
 **Test Configuration**
 * Hardware:
 * Flutter SDK Version:
 * Flutter Doctor Results:
-
+-->
 ## Is This Backward Compatible?
 
 Are you changes backwards compatible?
@@ -34,6 +35,7 @@ Are you changes backwards compatible?
 - [ ] Yes
 - [ ] No
 
+<!---
 ## Checklist:
 
 - [ ] I have performed a self-review of my own code
@@ -42,3 +44,4 @@ Are you changes backwards compatible?
 - [ ] My changes generate no new warnings
 - [ ] New and existing unit tests pass locally with my changes
 - [ ] I have checked my code and corrected any misspellings
+-->
