@@ -1,4 +1,4 @@
-# Hey, i just made a pull request ...
+# Hey, I just made a pull request!
 
 <!---
 ## Description
