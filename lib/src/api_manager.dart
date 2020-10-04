@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_api_manager/src/model/response.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -93,7 +94,7 @@ class APIManager {
     /// Set url
     final String url = baseUrl + endPoint;
 
-    /// Create non-auth headers
+    /// Create non-auth header
     final headers = {'Content-Type': 'application/json'};
 
     /// Add bearer token, if the API call is to be authenticated
@@ -134,8 +135,49 @@ class APIManager {
       /// status code of the response
       int statusCode = response.statusCode;
 
+      bool isSuccessful = statusCode >= 200 && statusCode < 300;
+
+      String error;
+      if (!isSuccessful) {
+        switch(statusCode) {
+          case HttpStatus.movedPermanently:
+          case HttpStatus.movedTemporarily:
+            error = "The endpoint to this API has been changed, please consider to update it.";
+            break;
+
+          case HttpStatus.badRequest:
+            error = "Please check your request and make sure you are posting a valid data body";
+            break;
+
+          case HttpStatus.unauthorized:
+            error = "This API needs to be authenticated with a Bearer token";
+            break;
+
+          case HttpStatus.forbidden:
+            error = "You are not allowed to call this API";
+            break;
+
+          case HttpStatus.unprocessableEntity:
+            error = "Provided credentials are not valid";
+            break;
+
+          case HttpStatus.tooManyRequests:
+            error = "You are requesting the APIs multiple times, please don't call the API(s) unnecessarily";
+            break;
+
+          case HttpStatus.internalServerError:
+          case HttpStatus.badGateway:
+          case HttpStatus.serviceUnavailable:
+            error = "Server is not responding, Please try again later!";
+            break;
+
+          default:
+            error = "Something went wrong, please try again later!";
+        }
+      }
+
       /// return the Response
-      return Response(data: responseBody, rawData: response, statusCode: statusCode, isSuccessful: statusCode >= 200 && statusCode < 300);
+      return Response(data: responseBody, rawData: response, statusCode: statusCode, isSuccessful: isSuccessful, error: error);
     } catch (error) {
       return Response(error: error.toString(), data: responseBody, rawData: response, isSuccessful: false);
     }
