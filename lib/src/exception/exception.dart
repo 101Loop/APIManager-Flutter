@@ -6,5 +6,5 @@ class APIException implements Exception {
   /// Status code of the API call
   int statusCode;
 
-  APIException(this.error, {this.statusCode = 1});
+  APIException(this.error, {this.statusCode = -1});
 }
