@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_api_manager/flutter_api_manager.dart';
+import 'package:flutter_api_manager/src/exception/exception.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -96,6 +97,123 @@ void main() {
       var result = await instance.makeRequest('endPoint', APIMethod.delete);
 
       expect(result.isSuccessful, true);
+    });
+
+    test('check moved permanently error is being thrown', () async {
+      APIManager.client = MockClient((request) async {
+        final response = {};
+        return http.Response(json.encode(response), 301);
+      });
+
+      try {
+        await instance.makeRequest('endPoint', APIMethod.delete);
+      } on APIException catch (error){
+        expect(error.error, 'The endpoint to this API has been changed, please consider to update it.');
+      }
+    });
+
+    test('check bad request error is being thrown', () async {
+      APIManager.client = MockClient((request) async {
+        final response = {};
+        return http.Response(json.encode(response), 401);
+      });
+
+      try {
+        await instance.makeRequest('endPoint', APIMethod.delete);
+      } on APIException catch (error){
+        expect(error.error, 'Please check your request and make sure you are posting a valid data body');
+      }
+    });
+
+    test('check unauthorized error is being thrown', () async {
+      APIManager.client = MockClient((request) async {
+        final response = {};
+        return http.Response(json.encode(response), 401);
+      });
+
+      try {
+        await instance.makeRequest('endPoint', APIMethod.delete);
+      } on APIException catch (error){
+        expect(error.error, 'This API needs to be authenticated with a Bearer token.');
+      }
+    });
+
+    test('check forbidden error is being thrown', () async {
+      APIManager.client = MockClient((request) async {
+        final response = {};
+        return http.Response(json.encode(response), 403);
+      });
+
+      try {
+        await instance.makeRequest('endPoint', APIMethod.delete);
+      } on APIException catch (error){
+        expect(error.error, 'You are not allowed to call this API.');
+      }
+    });
+
+    test('check unprocessable entity error is being thrown', () async {
+      APIManager.client = MockClient((request) async {
+        final response = {};
+        return http.Response(json.encode(response), 422);
+      });
+
+      try {
+        await instance.makeRequest('endPoint', APIMethod.delete);
+      } on APIException catch (error){
+        expect(error.error, 'Provided credentials are not valid.');
+      }
+    });
+
+    test('check too many request error is being thrown', () async {
+      APIManager.client = MockClient((request) async {
+        final response = {};
+        return http.Response(json.encode(response), 429);
+      });
+
+      try {
+        await instance.makeRequest('endPoint', APIMethod.delete);
+      } on APIException catch (error){
+        expect(error.error, 'Provided credentials are not valid.');
+      }
+    });
+
+    test('check internal server error is being thrown', () async {
+      APIManager.client = MockClient((request) async {
+        final response = {};
+        return http.Response(json.encode(response), 500);
+      });
+
+      try {
+        await instance.makeRequest('endPoint', APIMethod.delete);
+      } on APIException catch (error){
+        expect(error.error, 'Server is not responding, Please try again later!');
+      }
+    });
+
+    test('check bad gateway error is being thrown', () async {
+      APIManager.client = MockClient((request) async {
+        final response = {};
+        return http.Response(json.encode(response), 502);
+      });
+
+      try {
+        await instance.makeRequest('endPoint', APIMethod.delete);
+      } on APIException catch (error){
+        expect(error.error, 'Server is not responding, Please try again later!');
+      }
+    });
+
+    test('check service unavailable error is being thrown', () async {
+      APIManager.client = MockClient((request) async {
+        final response = {};
+        return http.Response(json.encode(response), 503);
+      });
+
+      try {
+        await instance.makeRequest('endPoint', APIMethod.delete);
+      } on APIException catch (error){
+        expect(error.error, 'Server is not responding, Please try again later!');
+      }
     });
   });
 }
