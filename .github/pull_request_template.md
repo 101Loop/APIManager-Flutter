@@ -8,7 +8,7 @@ Please include a summary of the change and which issue is fixed. Please also inc
 
 ## Motivation and Context
 
-<!--Please include a summary on why is your change required.-->
+<!--Please include a summary of why is your change required.-->
 
 ## Type of change
 
@@ -23,9 +23,8 @@ Please include a summary of the change and which issue is fixed. Please also inc
 <!---
 Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration.
 Please note that the code changes without tests will not be entertained.
+- [ ] I have run the tests, and all tests are passing
 -->
-- [ ] I have ran the tests, and all tests are passing
-
 
 ## Is This Backward Compatible? If not, please mention the reason
 
