@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_api_manager/src/exception/exception.dart';
 import 'package:flutter_api_manager/src/model/response.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -139,26 +140,26 @@ class APIManager {
 
       String error;
       if (!isSuccessful) {
-        switch(statusCode) {
+        switch (statusCode) {
           case HttpStatus.movedPermanently:
           case HttpStatus.movedTemporarily:
             error = "The endpoint to this API has been changed, please consider to update it.";
             break;
 
           case HttpStatus.badRequest:
-            error = "Please check your request and make sure you are posting a valid data body";
+            error = "Please check your request and make sure you are posting a valid data body.";
             break;
 
           case HttpStatus.unauthorized:
-            error = "This API needs to be authenticated with a Bearer token";
+            error = "This API needs to be authenticated with a Bearer token.";
             break;
 
           case HttpStatus.forbidden:
-            error = "You are not allowed to call this API";
+            error = "You are not allowed to call this API.";
             break;
 
           case HttpStatus.unprocessableEntity:
-            error = "Provided credentials are not valid";
+            error = "Provided credentials are not valid.";
             break;
 
           case HttpStatus.tooManyRequests:
@@ -174,6 +175,8 @@ class APIManager {
           default:
             error = "Something went wrong, please try again later!";
         }
+
+        throw APIException(error, statusCode: statusCode);
       }
 
       /// return the Response
