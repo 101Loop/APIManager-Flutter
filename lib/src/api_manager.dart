@@ -146,6 +146,10 @@ class APIManager {
   /// [data] - Map representation of data to be posted along with the file
   /// [isAuthenticated] - if the API is to be authenticated or not
   Future<Response> uploadFile(String endPoint, File file, String fileKey, {Map<String, String> data, bool isAuthenticated = true}) async {
+    assert (endPoint != null && endPoint.isNotEmpty);
+    assert (file != null);
+    assert (fileKey != null && fileKey.isNotEmpty);
+
     /// Common header
     var headers = {'Content-Type': 'application/json'};
 
@@ -162,7 +166,7 @@ class APIManager {
     /// Add headers, files and fields to the multipart request
     multipartRequest.headers.addAll(headers);
     multipartRequest.files.add(_file);
-    multipartRequest.fields.addAll(data);
+    if (data != null) multipartRequest.fields.addAll(data);
 
     var response;
 
