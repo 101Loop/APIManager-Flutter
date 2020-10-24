@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_api_manager/flutter_api_manager.dart';
 import 'package:flutter_api_manager/src/exception/exception.dart';
@@ -107,7 +108,7 @@ void main() {
 
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
-      } on APIException catch (error){
+      } on APIException catch (error) {
         expect(error.error, 'The endpoint to this API has been changed, please consider to update it.');
       }
     });
@@ -120,7 +121,7 @@ void main() {
 
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
-      } on APIException catch (error){
+      } on APIException catch (error) {
         expect(error.error, 'Please check your request and make sure you are posting a valid data body');
       }
     });
@@ -133,7 +134,7 @@ void main() {
 
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
-      } on APIException catch (error){
+      } on APIException catch (error) {
         expect(error.error, 'This API needs to be authenticated with a Bearer token.');
       }
     });
@@ -146,7 +147,7 @@ void main() {
 
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
-      } on APIException catch (error){
+      } on APIException catch (error) {
         expect(error.error, 'You are not allowed to call this API.');
       }
     });
@@ -159,7 +160,7 @@ void main() {
 
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
-      } on APIException catch (error){
+      } on APIException catch (error) {
         expect(error.error, 'Provided credentials are not valid.');
       }
     });
@@ -172,7 +173,7 @@ void main() {
 
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
-      } on APIException catch (error){
+      } on APIException catch (error) {
         expect(error.error, 'Provided credentials are not valid.');
       }
     });
@@ -185,7 +186,7 @@ void main() {
 
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
-      } on APIException catch (error){
+      } on APIException catch (error) {
         expect(error.error, 'Server is not responding, Please try again later!');
       }
     });
@@ -198,7 +199,7 @@ void main() {
 
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
-      } on APIException catch (error){
+      } on APIException catch (error) {
         expect(error.error, 'Server is not responding, Please try again later!');
       }
     });
@@ -211,9 +212,51 @@ void main() {
 
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
-      } on APIException catch (error){
+      } on APIException catch (error) {
         expect(error.error, 'Server is not responding, Please try again later!');
       }
+    });
+
+    test('check successful file upload', () async {
+      APIManager.client = MockClient((request) async {
+        final response = {};
+        return http.Response(json.encode(response), 200);
+      });
+
+      try {
+        var result = await instance.uploadFile('endPoint/', File('path'), 'file');
+        expect(result.isSuccessful, true);
+      } catch (error) {
+        expect(error.runtimeType, FileSystemException);
+      }
+    });
+
+    test('check file upload endpoint assertion', () async {
+      APIManager.client = MockClient((request) async {
+        final response = {};
+        return http.Response(json.encode(response), 200);
+      });
+
+      expect(() async => {await instance.uploadFile('', File('path'), 'file')}, throwsAssertionError);
+      expect(() async => {await instance.uploadFile(null, File('path'), 'file')}, throwsAssertionError);
+    });
+
+    test('check file upload null file assertion', () async {
+      APIManager.client = MockClient((request) async {
+        final response = {};
+        return http.Response(json.encode(response), 200);
+      });
+
+      expect(() async => {await instance.uploadFile('endPoint/', null, 'file')}, throwsAssertionError);
+    });
+
+    test('check successful file, null file key assertion', () async {
+      APIManager.client = MockClient((request) async {
+        final response = {};
+        return http.Response(json.encode(response), 200);
+      });
+
+      expect(() async => {await instance.uploadFile('endPoint/', File('path'), null)}, throwsAssertionError);
     });
   });
 }
