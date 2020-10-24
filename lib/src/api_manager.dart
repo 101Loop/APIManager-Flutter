@@ -5,6 +5,8 @@ import 'package:flutter_api_manager/src/exception/exception.dart';
 import 'package:flutter_api_manager/src/model/response.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
 
 enum APIMethod { get, post, put, patch, delete }
 
@@ -130,59 +132,103 @@ class APIManager {
           break;
       }
 
-      /// parse the response
-      responseBody = json.decode(response.body);
-
-      /// status code of the response
-      int statusCode = response.statusCode;
-
-      bool isSuccessful = statusCode >= 200 && statusCode < 300;
-
-      String error;
-      if (!isSuccessful) {
-        switch (statusCode) {
-          case HttpStatus.movedPermanently:
-          case HttpStatus.movedTemporarily:
-            error = "The endpoint to this API has been changed, please consider to update it.";
-            break;
-
-          case HttpStatus.badRequest:
-            error = "Please check your request and make sure you are posting a valid data body.";
-            break;
-
-          case HttpStatus.unauthorized:
-            error = "This API needs to be authenticated with a Bearer token.";
-            break;
-
-          case HttpStatus.forbidden:
-            error = "You are not allowed to call this API.";
-            break;
-
-          case HttpStatus.unprocessableEntity:
-            error = "Provided credentials are not valid.";
-            break;
-
-          case HttpStatus.tooManyRequests:
-            error = "You are requesting the APIs multiple times, please don't call the API(s) unnecessarily";
-            break;
-
-          case HttpStatus.internalServerError:
-          case HttpStatus.badGateway:
-          case HttpStatus.serviceUnavailable:
-            error = "Server is not responding, Please try again later!";
-            break;
-
-          default:
-            error = "Something went wrong, please try again later!";
-        }
-
-        throw APIException(error, statusCode: statusCode);
-      }
-
-      /// return the Response
-      return Response(data: responseBody, rawData: response, statusCode: statusCode, isSuccessful: isSuccessful, error: error);
+      return _handleResponse(response);
     } catch (error) {
       return Response(error: error.toString(), data: responseBody, rawData: response, isSuccessful: false);
     }
+  }
+
+  /// This method uploads the file
+  ///
+  /// [endPoint] - Endpoint of the API
+  /// [file] - the file which is to be uploaded
+  /// [fileKey] - file will be posted under this key
+  /// [data] - Map representation of data to be posted along with the file
+  /// [isAuthenticated] - if the API is to be authenticated or not
+  Future<Response> uploadFile(String endPoint, File file, String fileKey, {Map<String, String> data, bool isAuthenticated = true}) async {
+    /// Common header
+    var headers = {'Content-Type': 'application/json'};
+
+    /// if the API is to be authenticated, add a bearer token
+    if (isAuthenticated) {
+      headers.addAll({'Authorization': 'Bearer ${await _getToken()}'});
+    }
+
+    /// Create multipart request
+    final mimeTypeData = lookupMimeType(file.path, headerBytes: [0xFF, 0xD8]).split('/');
+    final multipartRequest = http.MultipartRequest('POST', Uri.parse(baseUrl + endPoint));
+    final _file = await http.MultipartFile.fromPath(fileKey, file.path, contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
+
+    /// Add headers, files and fields to the multipart request
+    multipartRequest.headers.addAll(headers);
+    multipartRequest.files.add(_file);
+    multipartRequest.fields.addAll(data);
+
+    var response;
+
+    try {
+      /// Send the request and await for the response
+      final streamedResponse = await multipartRequest.send();
+      response = await http.Response.fromStream(streamedResponse);
+
+      return _handleResponse(response);
+    } catch (error) {
+      return Response(error: error.toString(), data: null, rawData: response, isSuccessful: false);
+    }
+  }
+
+  /// This method handles the response of the API
+  _handleResponse(http.Response response) {
+    /// parse the response
+    var responseBody = json.decode(response.body);
+
+    /// status code of the response
+    int statusCode = response.statusCode;
+
+    bool isSuccessful = statusCode >= 200 && statusCode < 300;
+
+    String error;
+    if (!isSuccessful) {
+      switch (statusCode) {
+        case HttpStatus.movedPermanently:
+        case HttpStatus.movedTemporarily:
+          error = "The endpoint to this API has been changed, please consider to update it.";
+          break;
+
+        case HttpStatus.badRequest:
+          error = "Please check your request and make sure you are posting a valid data body.";
+          break;
+
+        case HttpStatus.unauthorized:
+          error = "This API needs to be authenticated with a Bearer token.";
+          break;
+
+        case HttpStatus.forbidden:
+          error = "You are not allowed to call this API.";
+          break;
+
+        case HttpStatus.unprocessableEntity:
+          error = "Provided credentials are not valid.";
+          break;
+
+        case HttpStatus.tooManyRequests:
+          error = "You are requesting the APIs multiple times, please don't call the API(s) unnecessarily";
+          break;
+
+        case HttpStatus.internalServerError:
+        case HttpStatus.badGateway:
+        case HttpStatus.serviceUnavailable:
+          error = "Server is not responding, Please try again later!";
+          break;
+
+        default:
+          error = "Something went wrong, please try again later!";
+      }
+
+      throw APIException(error, statusCode: statusCode);
+    }
+
+    /// return the Response
+    return Response(data: responseBody, rawData: response, statusCode: statusCode, isSuccessful: isSuccessful, error: error);
   }
 }
