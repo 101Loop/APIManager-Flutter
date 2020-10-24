@@ -18,8 +18,7 @@ the API calls from a single place.<br>
 - [X] Manage token transaction
 - [x] Secured token transaction
 - [x] Basic CRUD operations
-- [ ] Handle authorization
-- [ ] Upload file
+- [x] Upload file
 - [ ] Download file
 - [ ] Enable logging
 - [ ] Support Multi environment base url
