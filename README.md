@@ -8,20 +8,6 @@
 `APIManager-Flutter` is an API manager for flutter applications that can manage
 the API calls from a single place.<br>
 
-# 🔮 What's an API?
-
-<br> When you use an application on your mobile phone, the application connects
-to the Internet and sends data to a server. The server then retrieves that data,
-interprets it, performs the necessary actions and sends it back to your phone.
-The application then interprets that data and presents you with the information
-you wanted in a readable way. This is what an API is - all of this happens via
-API.<br>
-
-# 💡 What's Unique?
-
-<br> The handling of APIs is usually messy. So here we present to you a much
-simplified way to beautifully handle the API calls.
-
 # Features
 
 Here's the list of your all-in-one service
@@ -33,6 +19,54 @@ Here's the list of your all-in-one service
 - [ ] Download file
 - [ ] Enable logging
 - [ ] Support Multi environment base url
+
+## Usage
+To use this package, add `api_manager_flutter` as a dependency in your `pubspec.yaml` file.
+``` dart
+...
+flutter_api_manager:
+  path: <path_to_root_folder>
+...
+```
+### Example
+
+Create a singleton and make requests
+``` dart
+import 'package:flutter_api_manager/flutter_api_manager.dart';
+
+class APIController {
+  APIManager _apiManager = APIManager(baseUrl: '<your-base-url>');
+  
+  static fetchResults() {
+    _apiManager.makeRequest('endPoint', APIMethod.get).then((response) {
+      ...    
+    });
+  }
+  
+  static uploadFile(File imageFile, String fileKey, Map data,) {
+    _apiManager.uploadFile('endPoint', imageFile, fileKey, data: data).then((response) {
+      ...    
+    });
+  }
+}
+```
+Login once to set the token throughout the app
+```dart
+...
+  static login() {
+    String token = _getToken();
+    _apiManager.login(token);
+  }
+...
+```
+Logout when you want to clear the token
+```dart
+...
+  static login() {
+    _apiManager.logout();
+  }
+...
+```
 
 ## Want to Contribute
 
