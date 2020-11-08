@@ -62,7 +62,7 @@ Login once to set the token throughout the app
 Logout when you want to clear the token
 ```dart
 ...
-  static login() {
+  static logout() {
     _apiManager.logout();
   }
 ...
