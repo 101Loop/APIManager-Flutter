@@ -21,7 +21,7 @@ Here's the list of your all-in-one service
 - [ ] Support Multi environment base url
 
 ## Usage
-To use this package, add `api_manager_flutter` as a dependency in your `pubspec.yaml` file.
+To use this package, add `flutter_api_manager` as a dependency in your `pubspec.yaml` file.
 ``` dart
 ...
 flutter_api_manager:
