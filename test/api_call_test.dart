@@ -116,13 +116,13 @@ void main() {
     test('check bad request error is being thrown', () async {
       APIManager.client = MockClient((request) async {
         final response = {};
-        return http.Response(json.encode(response), 401);
+        return http.Response(json.encode(response), 400);
       });
 
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.error, 'Please check your request and make sure you are posting a valid data body');
+        expect(error.error, 'Please check your request and make sure you are posting a valid data body.');
       }
     });
 
@@ -174,7 +174,7 @@ void main() {
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.error, 'Provided credentials are not valid.');
+        expect(error.error, "You are requesting the APIs too often, please don't call the API(s) unnecessarily");
       }
     });
 

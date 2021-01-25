@@ -207,7 +207,7 @@ class APIManager {
           break;
 
         case HttpStatus.tooManyRequests:
-          error = "You are requesting the APIs multiple times, please don't call the API(s) unnecessarily";
+          error = "You are requesting the APIs too often, please don't call the API(s) unnecessarily";
           break;
 
         case HttpStatus.internalServerError:
