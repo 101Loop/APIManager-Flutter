@@ -187,7 +187,7 @@ void main() {
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.error, 'Server is not responding, Please try again later!');
+        expect(error.error, 'Server is not responding, please try again later!');
       }
     });
 
@@ -200,7 +200,7 @@ void main() {
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.error, 'Server is not responding, Please try again later!');
+        expect(error.error, 'Server is not responding, please try again later!');
       }
     });
 
@@ -213,7 +213,7 @@ void main() {
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.error, 'Server is not responding, Please try again later!');
+        expect(error.error, 'Server is not responding, please try again later!');
       }
     });
 
