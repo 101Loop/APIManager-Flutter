@@ -110,32 +110,27 @@ class APIManager {
     }
 
     http.Response response;
-    var responseBody;
 
-    try {
-      /// switch on the basis of method provided and make relevant API call
-      switch (method) {
-        case APIMethod.get:
-          response = await client.get(url, headers: headers);
-          break;
-        case APIMethod.post:
-          response = await client.post(url, headers: headers, body: json.encode(data));
-          break;
-        case APIMethod.put:
-          response = await client.put(url, headers: headers, body: json.encode(data));
-          break;
-        case APIMethod.patch:
-          response = await client.patch(url, headers: headers, body: json.encode(data));
-          break;
-        case APIMethod.delete:
-          response = await client.delete(url, headers: headers);
-          break;
-      }
-
-      return _handleResponse(response);
-    } catch (error) {
-      return Response(error: error.toString(), data: responseBody, rawData: response, isSuccessful: false);
+    /// switch on the basis of method provided and make relevant API call
+    switch (method) {
+      case APIMethod.get:
+        response = await client.get(url, headers: headers);
+        break;
+      case APIMethod.post:
+        response = await client.post(url, headers: headers, body: json.encode(data));
+        break;
+      case APIMethod.put:
+        response = await client.put(url, headers: headers, body: json.encode(data));
+        break;
+      case APIMethod.patch:
+        response = await client.patch(url, headers: headers, body: json.encode(data));
+        break;
+      case APIMethod.delete:
+        response = await client.delete(url, headers: headers);
+        break;
     }
+
+    return _handleResponse(response);
   }
 
   /// This method uploads the file
@@ -146,9 +141,9 @@ class APIManager {
   /// [data] - Map representation of data to be posted along with the file
   /// [isAuthenticated] - if the API is to be authenticated or not
   Future<Response> uploadFile(String endPoint, File file, String fileKey, {Map<String, String> data, bool isAuthenticated = true}) async {
-    assert (endPoint != null && endPoint.isNotEmpty);
-    assert (file != null);
-    assert (fileKey != null && fileKey.isNotEmpty);
+    assert(endPoint != null && endPoint.isNotEmpty);
+    assert(file != null);
+    assert(fileKey != null && fileKey.isNotEmpty);
 
     /// Common header
     var headers = {'Content-Type': 'application/json'};
@@ -170,15 +165,11 @@ class APIManager {
 
     var response;
 
-    try {
-      /// Send the request and await for the response
-      final streamedResponse = await multipartRequest.send();
-      response = await http.Response.fromStream(streamedResponse);
+    /// Send the request and await for the response
+    final streamedResponse = await multipartRequest.send();
+    response = await http.Response.fromStream(streamedResponse);
 
-      return _handleResponse(response);
-    } catch (error) {
-      return Response(error: error.toString(), data: null, rawData: response, isSuccessful: false);
-    }
+    return _handleResponse(response);
   }
 
   /// This method handles the response of the API
@@ -216,20 +207,20 @@ class APIManager {
           break;
 
         case HttpStatus.tooManyRequests:
-          error = "You are requesting the APIs multiple times, please don't call the API(s) unnecessarily";
+          error = "You are requesting the APIs too often, please don't call the API(s) unnecessarily";
           break;
 
         case HttpStatus.internalServerError:
         case HttpStatus.badGateway:
         case HttpStatus.serviceUnavailable:
-          error = "Server is not responding, Please try again later!";
+          error = "Server is not responding, please try again later!";
           break;
 
         default:
           error = "Something went wrong, please try again later!";
       }
 
-      throw APIException(error, statusCode: statusCode);
+      throw APIException(error, data: responseBody, statusCode: statusCode);
     }
 
     /// return the Response

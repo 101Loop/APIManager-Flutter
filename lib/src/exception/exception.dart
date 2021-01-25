@@ -1,10 +1,13 @@
 /// Custom exception class
 class APIException implements Exception {
+  /// response data
+  final data;
+
   /// Error in string format
-  String error;
+  final String error;
 
   /// Status code of the API call
-  int statusCode;
+  final int statusCode;
 
-  APIException(this.error, {this.statusCode = -1});
+  APIException(this.error, {this.data = '', this.statusCode = -1});
 }
