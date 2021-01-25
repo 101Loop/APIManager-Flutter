@@ -229,7 +229,7 @@ class APIManager {
           error = "Something went wrong, please try again later!";
       }
 
-      throw APIException(error, statusCode: statusCode);
+      throw APIException(error, data: responseBody, statusCode: statusCode);
     }
 
     /// return the Response
