@@ -10,4 +10,7 @@ class APIException implements Exception {
   final int statusCode;
 
   APIException(this.error, {this.data = '', this.statusCode = -1});
+
+  @override
+  String toString() => error;
 }
