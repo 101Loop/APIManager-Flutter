@@ -109,7 +109,7 @@ void main() {
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.error, 'The endpoint to this API has been changed, please consider to update it.');
+        expect(error.toString(), 'The endpoint to this API has been changed, please consider to update it.');
       }
     });
 
@@ -122,7 +122,7 @@ void main() {
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.error, 'Please check your request and make sure you are posting a valid data body.');
+        expect(error.toString(), 'Please check your request and make sure you are posting a valid data body.');
       }
     });
 
@@ -135,7 +135,7 @@ void main() {
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.error, 'This API needs to be authenticated with a Bearer token.');
+        expect(error.toString(), 'This API needs to be authenticated with a Bearer token.');
       }
     });
 
@@ -148,7 +148,7 @@ void main() {
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.error, 'You are not allowed to call this API.');
+        expect(error.toString(), 'You are not allowed to call this API.');
       }
     });
 
@@ -161,7 +161,7 @@ void main() {
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.error, 'Provided credentials are not valid.');
+        expect(error.toString(), 'Provided credentials are not valid.');
       }
     });
 
@@ -174,7 +174,7 @@ void main() {
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.error, "You are requesting the APIs too often, please don't call the API(s) unnecessarily");
+        expect(error.toString(), "You are requesting the APIs too often, please don't call the API(s) unnecessarily");
       }
     });
 
@@ -187,7 +187,7 @@ void main() {
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.error, 'Server is not responding, please try again later!');
+        expect(error.toString(), 'Server is not responding, please try again later!');
       }
     });
 
@@ -200,7 +200,7 @@ void main() {
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.error, 'Server is not responding, please try again later!');
+        expect(error.toString(), 'Server is not responding, please try again later!');
       }
     });
 
@@ -213,7 +213,7 @@ void main() {
       try {
         await instance.makeRequest('endPoint', APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.error, 'Server is not responding, please try again later!');
+        expect(error.toString(), 'Server is not responding, please try again later!');
       }
     });
 
