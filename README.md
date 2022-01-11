@@ -20,6 +20,23 @@ Here's the list of your all-in-one service
 - [ ] Enable logging
 - [ ] Support Multi environment base url
 
+## Android Compatibility
+Since this package is dependent on `flutter_secure_storage` a `minSdkVersion` of >=18 is required
+
+android > app > build.gradle
+```
+android {
+    ...
+
+    defaultConfig {
+        ...
+        minSdkVersion 18
+        ...
+    }
+
+}
+```
+
 ## Usage
 To use this package, add `flutter_api_manager` as a dependency in your `pubspec.yaml` file.
 ``` dart
