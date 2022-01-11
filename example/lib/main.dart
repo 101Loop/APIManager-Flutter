@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_api_manager/flutter_api_manager.dart';
-import 'package:flutter_api_manager/src/model/response.dart';
 
 void main() {
   runApp(MyApp());
