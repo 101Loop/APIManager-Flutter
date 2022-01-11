@@ -24,7 +24,8 @@ void main() {
     /// Create an instance of [APIManager]
     APIManager instance = APIManager.getInstance(baseUrl: 'base_url/');
 
-    test('check get method returns the correct response - non authenticated', () async {
+    test('check get method returns the correct response - non authenticated',
+        () async {
       APIManager.client = MockClient((request) async {
         final response = {
           'data': {'id': 1, 'name': 'name'},
@@ -32,13 +33,13 @@ void main() {
         return http.Response(json.encode(response), 200);
       });
 
-      var result = await instance.request('endPoint', APIMethod.get,
-          isAuthenticated: false);
+      var result = await instance.request('endPoint', isAuthenticated: false);
 
       expect(result.isSuccessful, true);
     });
 
-    test('check get method returns the correct response - authenticated', () async {
+    test('check get method returns the correct response - authenticated',
+        () async {
       APIManager.client = MockClient((request) async {
         final response = {
           'data': {'id': 1, 'name': 'name'},
@@ -46,12 +47,13 @@ void main() {
         return http.Response(json.encode(response), 200);
       });
 
-      var result = await instance.request('endPoint', APIMethod.get);
+      var result = await instance.request('endPoint');
 
       expect(result.isSuccessful, true);
     });
 
-    test('check post method returns the correct response - authenticated', () async {
+    test('check post method returns the correct response - authenticated',
+        () async {
       APIManager.client = MockClient((request) async {
         final response = {
           'data': {'id': 1, 'name': 'name'},
@@ -59,12 +61,13 @@ void main() {
         return http.Response(json.encode(response), 201);
       });
 
-      var result = await instance.request('endPoint', APIMethod.post);
+      var result = await instance.request('endPoint', method: APIMethod.post);
 
       expect(result.isSuccessful, true);
     });
 
-    test('check put method returns the correct response - authenticated', () async {
+    test('check put method returns the correct response - authenticated',
+        () async {
       APIManager.client = MockClient((request) async {
         final response = {
           'data': {'id': 1, 'name': 'name'},
@@ -72,12 +75,13 @@ void main() {
         return http.Response(json.encode(response), 202);
       });
 
-      var result = await instance.request('endPoint', APIMethod.put);
+      var result = await instance.request('endPoint', method: APIMethod.put);
 
       expect(result.isSuccessful, true);
     });
 
-    test('check patch method returns the correct response - authenticated', () async {
+    test('check patch method returns the correct response - authenticated',
+        () async {
       APIManager.client = MockClient((request) async {
         final response = {
           'data': {'id': 1, 'name': 'name'},
@@ -85,18 +89,19 @@ void main() {
         return http.Response(json.encode(response), 202);
       });
 
-      var result = await instance.request('endPoint', APIMethod.patch);
+      var result = await instance.request('endPoint', method: APIMethod.patch);
 
       expect(result.isSuccessful, true);
     });
 
-    test('check delete method returns the correct response - authenticated', () async {
+    test('check delete method returns the correct response - authenticated',
+        () async {
       APIManager.client = MockClient((request) async {
         final response = {};
         return http.Response(json.encode(response), 204);
       });
 
-      var result = await instance.request('endPoint', APIMethod.delete);
+      var result = await instance.request('endPoint', method: APIMethod.delete);
 
       expect(result.isSuccessful, true);
     });
@@ -108,9 +113,10 @@ void main() {
       });
 
       try {
-        await instance.request('endPoint', APIMethod.delete);
+        await instance.request('endPoint', method: APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.toString(), 'The endpoint to this API has been changed, please consider to update it.');
+        expect(error.toString(),
+            'The endpoint to this API has been changed, please consider to update it.');
       }
     });
 
@@ -121,9 +127,10 @@ void main() {
       });
 
       try {
-        await instance.request('endPoint', APIMethod.delete);
+        await instance.request('endPoint', method: APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.toString(), 'Please check your request and make sure you are posting a valid data body.');
+        expect(error.toString(),
+            'Please check your request and make sure you are posting a valid data body.');
       }
     });
 
@@ -134,9 +141,10 @@ void main() {
       });
 
       try {
-        await instance.request('endPoint', APIMethod.delete);
+        await instance.request('endPoint', method: APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.toString(), 'This API needs to be authenticated with a Bearer token.');
+        expect(error.toString(),
+            'This API needs to be authenticated with a Bearer token.');
       }
     });
 
@@ -147,7 +155,7 @@ void main() {
       });
 
       try {
-        await instance.request('endPoint', APIMethod.delete);
+        await instance.request('endPoint', method: APIMethod.delete);
       } on APIException catch (error) {
         expect(error.toString(), 'You are not allowed to call this API.');
       }
@@ -160,7 +168,7 @@ void main() {
       });
 
       try {
-        await instance.request('endPoint', APIMethod.delete);
+        await instance.request('endPoint', method: APIMethod.delete);
       } on APIException catch (error) {
         expect(error.toString(), 'Provided credentials are not valid.');
       }
@@ -173,9 +181,10 @@ void main() {
       });
 
       try {
-        await instance.request('endPoint', APIMethod.delete);
+        await instance.request('endPoint', method: APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.toString(), "You are requesting the APIs too often, please don't call the API(s) unnecessarily");
+        expect(error.toString(),
+            "You are requesting the APIs too often, please don't call the API(s) unnecessarily");
       }
     });
 
@@ -186,9 +195,10 @@ void main() {
       });
 
       try {
-        await instance.request('endPoint', APIMethod.delete);
+        await instance.request('endPoint', method: APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.toString(), 'Server is not responding, please try again later!');
+        expect(error.toString(),
+            'Server is not responding, please try again later!');
       }
     });
 
@@ -199,9 +209,10 @@ void main() {
       });
 
       try {
-        await instance.request('endPoint', APIMethod.delete);
+        await instance.request('endPoint', method: APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.toString(), 'Server is not responding, please try again later!');
+        expect(error.toString(),
+            'Server is not responding, please try again later!');
       }
     });
 
@@ -212,9 +223,10 @@ void main() {
       });
 
       try {
-        await instance.request('endPoint', APIMethod.delete);
+        await instance.request('endPoint', method: APIMethod.delete);
       } on APIException catch (error) {
-        expect(error.toString(), 'Server is not responding, please try again later!');
+        expect(error.toString(),
+            'Server is not responding, please try again later!');
       }
     });
 
@@ -225,7 +237,8 @@ void main() {
       });
 
       try {
-        var result = await instance.uploadFile('endPoint/', File('path'), 'file');
+        var result =
+            await instance.uploadFile('endPoint/', File('path'), 'file');
         expect(result.isSuccessful, true);
       } catch (error) {
         expect(error.runtimeType, FileSystemException);
@@ -238,8 +251,11 @@ void main() {
         return http.Response(json.encode(response), 200);
       });
 
-      expect(() async => {await instance.uploadFile('', File('path'), 'file')}, throwsAssertionError);
-      expect(() async => {await instance.uploadFile(null, File('path'), 'file')}, throwsAssertionError);
+      expect(() async => {await instance.uploadFile('', File('path'), 'file')},
+          throwsAssertionError);
+      expect(
+          () async => {await instance.uploadFile(null, File('path'), 'file')},
+          throwsAssertionError);
     });
 
     test('check file upload null file assertion', () async {
@@ -248,7 +264,8 @@ void main() {
         return http.Response(json.encode(response), 200);
       });
 
-      expect(() async => {await instance.uploadFile('endPoint/', null, 'file')}, throwsAssertionError);
+      expect(() async => {await instance.uploadFile('endPoint/', null, 'file')},
+          throwsAssertionError);
     });
 
     test('check successful file, null file key assertion', () async {
@@ -257,7 +274,10 @@ void main() {
         return http.Response(json.encode(response), 200);
       });
 
-      expect(() async => {await instance.uploadFile('endPoint/', File('path'), null)}, throwsAssertionError);
+      expect(
+          () async =>
+              {await instance.uploadFile('endPoint/', File('path'), null)},
+          throwsAssertionError);
     });
   });
 }

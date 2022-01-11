@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> {
     final _apiManager = APIManager.getInstance(baseUrl: '<replace-me>');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
-        response = await _apiManager.request('/api/users/4', APIMethod.get);
+        response = await _apiManager.request('/api/users/4');
         setState(() {});
       } catch (e) {
         print(e);

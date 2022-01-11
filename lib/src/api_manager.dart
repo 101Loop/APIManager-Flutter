@@ -90,11 +90,15 @@ class APIManager {
   /// Makes the API request here
   ///
   /// [endPoint] - Endpoint of the API
-  /// [method] - Type of [APIMethod]. See [APIMethod] enum for all the available methods
+  /// [method] - Type of [APIMethod]. Defaults to [APIMethod.get] See [APIMethod] enum for all the available methods
   /// [data] - data to be passed in the request in [Map] format
   /// [isAuthenticated] - if authenticated, Bearer token authorization will be added, otherwise not
-  Future<Response> request(String endPoint, APIMethod method,
-      {Map data, bool isAuthenticated = true}) async {
+  Future<Response> request(
+    String endPoint, {
+    APIMethod method = APIMethod.get,
+    Map data,
+    bool isAuthenticated = true,
+  }) async {
     /// Set url
     final String url = baseUrl + endPoint;
 
@@ -118,13 +122,16 @@ class APIManager {
         response = await client.get(url, headers: headers);
         break;
       case APIMethod.post:
-        response = await client.post(url, headers: headers, body: json.encode(data));
+        response =
+            await client.post(url, headers: headers, body: json.encode(data));
         break;
       case APIMethod.put:
-        response = await client.put(url, headers: headers, body: json.encode(data));
+        response =
+            await client.put(url, headers: headers, body: json.encode(data));
         break;
       case APIMethod.patch:
-        response = await client.patch(url, headers: headers, body: json.encode(data));
+        response =
+            await client.patch(url, headers: headers, body: json.encode(data));
         break;
       case APIMethod.delete:
         response = await client.delete(url, headers: headers);
@@ -141,7 +148,8 @@ class APIManager {
   /// [fileKey] - file will be posted under this key
   /// [data] - Map representation of data to be posted along with the file
   /// [isAuthenticated] - if the API is to be authenticated or not
-  Future<Response> uploadFile(String endPoint, File file, String fileKey, {Map<String, String> data, bool isAuthenticated = true}) async {
+  Future<Response> uploadFile(String endPoint, File file, String fileKey,
+      {Map<String, String> data, bool isAuthenticated = true}) async {
     assert(endPoint != null && endPoint.isNotEmpty);
     assert(file != null);
     assert(fileKey != null && fileKey.isNotEmpty);
@@ -155,9 +163,12 @@ class APIManager {
     }
 
     /// Create multipart request
-    final mimeTypeData = lookupMimeType(file.path, headerBytes: [0xFF, 0xD8]).split('/');
-    final multipartRequest = http.MultipartRequest('POST', Uri.parse(baseUrl + endPoint));
-    final _file = await http.MultipartFile.fromPath(fileKey, file.path, contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
+    final mimeTypeData =
+        lookupMimeType(file.path, headerBytes: [0xFF, 0xD8]).split('/');
+    final multipartRequest =
+        http.MultipartRequest('POST', Uri.parse(baseUrl + endPoint));
+    final _file = await http.MultipartFile.fromPath(fileKey, file.path,
+        contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
 
     /// Add headers, files and fields to the multipart request
     multipartRequest.headers.addAll(headers);
@@ -188,11 +199,13 @@ class APIManager {
       switch (statusCode) {
         case HttpStatus.movedPermanently:
         case HttpStatus.movedTemporarily:
-          error = "The endpoint to this API has been changed, please consider to update it.";
+          error =
+              "The endpoint to this API has been changed, please consider to update it.";
           break;
 
         case HttpStatus.badRequest:
-          error = "Please check your request and make sure you are posting a valid data body.";
+          error =
+              "Please check your request and make sure you are posting a valid data body.";
           break;
 
         case HttpStatus.unauthorized:
@@ -208,7 +221,8 @@ class APIManager {
           break;
 
         case HttpStatus.tooManyRequests:
-          error = "You are requesting the APIs too often, please don't call the API(s) unnecessarily";
+          error =
+              "You are requesting the APIs too often, please don't call the API(s) unnecessarily";
           break;
 
         case HttpStatus.internalServerError:
@@ -224,6 +238,11 @@ class APIManager {
       throw APIException(error, data: responseBody, statusCode: statusCode);
     }
 
-    return Response(data: responseBody, rawData: response, statusCode: statusCode, isSuccessful: isSuccessful, error: error);
+    return Response(
+        data: responseBody,
+        rawData: response,
+        statusCode: statusCode,
+        isSuccessful: isSuccessful,
+        error: error);
   }
 }
