@@ -44,7 +44,7 @@ class APIManager {
   }
 
   /// Save token, will be used throughout the app for authentication
-  login(String token) async {
+  Future<void> login(String token) async {
     assert(token != null && token.isNotEmpty);
 
     /// set token
@@ -73,7 +73,7 @@ class APIManager {
   }
 
   /// Delete the token,
-  logout() async {
+  Future<void> logout() async {
     /// clear the storage
     try {
       await _storage.deleteAll();
@@ -93,7 +93,8 @@ class APIManager {
   /// [method] - Type of [APIMethod]. See [APIMethod] enum for all the available methods
   /// [data] - data to be passed in the request in [Map] format
   /// [isAuthenticated] - if authenticated, Bearer token authorization will be added, otherwise not
-  Future<Response> makeRequest(String endPoint, APIMethod method, {Map data, bool isAuthenticated = true}) async {
+  Future<Response> request(String endPoint, APIMethod method,
+      {Map data, bool isAuthenticated = true}) async {
     /// Set url
     final String url = baseUrl + endPoint;
 
@@ -223,7 +224,6 @@ class APIManager {
       throw APIException(error, data: responseBody, statusCode: statusCode);
     }
 
-    /// return the Response
     return Response(data: responseBody, rawData: response, statusCode: statusCode, isSuccessful: isSuccessful, error: error);
   }
 }

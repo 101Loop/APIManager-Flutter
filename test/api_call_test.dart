@@ -32,7 +32,8 @@ void main() {
         return http.Response(json.encode(response), 200);
       });
 
-      var result = await instance.makeRequest('endPoint', APIMethod.get, isAuthenticated: false);
+      var result = await instance.request('endPoint', APIMethod.get,
+          isAuthenticated: false);
 
       expect(result.isSuccessful, true);
     });
@@ -45,7 +46,7 @@ void main() {
         return http.Response(json.encode(response), 200);
       });
 
-      var result = await instance.makeRequest('endPoint', APIMethod.get);
+      var result = await instance.request('endPoint', APIMethod.get);
 
       expect(result.isSuccessful, true);
     });
@@ -58,7 +59,7 @@ void main() {
         return http.Response(json.encode(response), 201);
       });
 
-      var result = await instance.makeRequest('endPoint', APIMethod.post);
+      var result = await instance.request('endPoint', APIMethod.post);
 
       expect(result.isSuccessful, true);
     });
@@ -71,7 +72,7 @@ void main() {
         return http.Response(json.encode(response), 202);
       });
 
-      var result = await instance.makeRequest('endPoint', APIMethod.put);
+      var result = await instance.request('endPoint', APIMethod.put);
 
       expect(result.isSuccessful, true);
     });
@@ -84,7 +85,7 @@ void main() {
         return http.Response(json.encode(response), 202);
       });
 
-      var result = await instance.makeRequest('endPoint', APIMethod.patch);
+      var result = await instance.request('endPoint', APIMethod.patch);
 
       expect(result.isSuccessful, true);
     });
@@ -95,7 +96,7 @@ void main() {
         return http.Response(json.encode(response), 204);
       });
 
-      var result = await instance.makeRequest('endPoint', APIMethod.delete);
+      var result = await instance.request('endPoint', APIMethod.delete);
 
       expect(result.isSuccessful, true);
     });
@@ -107,7 +108,7 @@ void main() {
       });
 
       try {
-        await instance.makeRequest('endPoint', APIMethod.delete);
+        await instance.request('endPoint', APIMethod.delete);
       } on APIException catch (error) {
         expect(error.toString(), 'The endpoint to this API has been changed, please consider to update it.');
       }
@@ -120,7 +121,7 @@ void main() {
       });
 
       try {
-        await instance.makeRequest('endPoint', APIMethod.delete);
+        await instance.request('endPoint', APIMethod.delete);
       } on APIException catch (error) {
         expect(error.toString(), 'Please check your request and make sure you are posting a valid data body.');
       }
@@ -133,7 +134,7 @@ void main() {
       });
 
       try {
-        await instance.makeRequest('endPoint', APIMethod.delete);
+        await instance.request('endPoint', APIMethod.delete);
       } on APIException catch (error) {
         expect(error.toString(), 'This API needs to be authenticated with a Bearer token.');
       }
@@ -146,7 +147,7 @@ void main() {
       });
 
       try {
-        await instance.makeRequest('endPoint', APIMethod.delete);
+        await instance.request('endPoint', APIMethod.delete);
       } on APIException catch (error) {
         expect(error.toString(), 'You are not allowed to call this API.');
       }
@@ -159,7 +160,7 @@ void main() {
       });
 
       try {
-        await instance.makeRequest('endPoint', APIMethod.delete);
+        await instance.request('endPoint', APIMethod.delete);
       } on APIException catch (error) {
         expect(error.toString(), 'Provided credentials are not valid.');
       }
@@ -172,7 +173,7 @@ void main() {
       });
 
       try {
-        await instance.makeRequest('endPoint', APIMethod.delete);
+        await instance.request('endPoint', APIMethod.delete);
       } on APIException catch (error) {
         expect(error.toString(), "You are requesting the APIs too often, please don't call the API(s) unnecessarily");
       }
@@ -185,7 +186,7 @@ void main() {
       });
 
       try {
-        await instance.makeRequest('endPoint', APIMethod.delete);
+        await instance.request('endPoint', APIMethod.delete);
       } on APIException catch (error) {
         expect(error.toString(), 'Server is not responding, please try again later!');
       }
@@ -198,7 +199,7 @@ void main() {
       });
 
       try {
-        await instance.makeRequest('endPoint', APIMethod.delete);
+        await instance.request('endPoint', APIMethod.delete);
       } on APIException catch (error) {
         expect(error.toString(), 'Server is not responding, please try again later!');
       }
@@ -211,7 +212,7 @@ void main() {
       });
 
       try {
-        await instance.makeRequest('endPoint', APIMethod.delete);
+        await instance.request('endPoint', APIMethod.delete);
       } on APIException catch (error) {
         expect(error.toString(), 'Server is not responding, please try again later!');
       }
