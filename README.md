@@ -24,8 +24,7 @@ Here's the list of your all-in-one service
 To use this package, add `flutter_api_manager` as a dependency in your `pubspec.yaml` file.
 ``` dart
 ...
-flutter_api_manager:
-  path: <path_to_root_folder>
+flutter_api_manager: <latest_version>
 ...
 ```
 ### Example
@@ -35,10 +34,10 @@ Create a singleton and make requests
 import 'package:flutter_api_manager/flutter_api_manager.dart';
 
 class APIController {
-  APIManager _apiManager = APIManager(baseUrl: '<your-base-url>');
+  APIManager _apiManager = APIManager.getInstance(baseUrl: '<your-base-url>');
   
   static fetchResults() {
-    _apiManager.makeRequest('endPoint', APIMethod.get).then((response) {
+    _apiManager.request('endPoint', APIMethod.get).then((response) {
       ...    
     });
   }
