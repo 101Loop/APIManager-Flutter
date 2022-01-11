@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  test_api: ^0.2.18
   http: ^0.12.2
   flutter_secure_storage: ^3.3.4
   mime: ^0.9.7

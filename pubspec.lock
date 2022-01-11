@@ -157,7 +157,7 @@ packages:
     source: hosted
     version: "1.2.0-nullsafety.1"
   test_api:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: test_api
       url: "https://pub.dartlang.org"
