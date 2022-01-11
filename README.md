@@ -37,7 +37,7 @@ class APIController {
   APIManager _apiManager = APIManager.getInstance(baseUrl: '<your-base-url>');
   
   static fetchResults() {
-    _apiManager.request('endPoint', APIMethod.get).then((response) {
+    _apiManager.request('endPoint', method: APIMethod.get).then((response) {
       ...    
     });
   }
