@@ -4,16 +4,16 @@ version: 0.0.1
 homepage: https://github.com/101Loop/APIManager-Flutter
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
   flutter: ">=1.17.0 <2.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.12.2
-  flutter_secure_storage: ^3.3.4
-  mime: ^0.9.7
-  http_parser: ^3.1.4
+  http: ^0.13.4
+  flutter_secure_storage: ^5.0.2
+  mime: ^1.0.1
+  http_parser: ^4.0.0
 
 dev_dependencies:
   flutter_test:

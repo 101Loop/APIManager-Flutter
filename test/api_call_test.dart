@@ -252,31 +252,6 @@ void main() {
 
       expect(() async => {await instance.uploadFile('', File('path'), 'file')},
           throwsAssertionError);
-      expect(
-          () async => {await instance.uploadFile(null, File('path'), 'file')},
-          throwsAssertionError);
-    });
-
-    test('check file upload null file assertion', () async {
-      APIManager.client = MockClient((request) async {
-        final response = {};
-        return http.Response(json.encode(response), 200);
-      });
-
-      expect(() async => {await instance.uploadFile('endPoint/', null, 'file')},
-          throwsAssertionError);
-    });
-
-    test('check successful file, null file key assertion', () async {
-      APIManager.client = MockClient((request) async {
-        final response = {};
-        return http.Response(json.encode(response), 200);
-      });
-
-      expect(
-          () async =>
-              {await instance.uploadFile('endPoint/', File('path'), null)},
-          throwsAssertionError);
     });
   });
 }

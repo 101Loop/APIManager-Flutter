@@ -3,9 +3,9 @@
 class Response {
   final data;
   final int statusCode;
-  final String error;
+  final String? error;
   final rawData;
-  final bool isSuccessful;
+  final bool? isSuccessful;
 
   Response({
     this.data,
