@@ -1,9 +1,10 @@
 # APIManager-Flutter
 
+[![pub package](https://img.shields.io/pub/v/flutter_api_manager.svg)](https://pub.dev/packages/flutter_api_manager)
 ![codecov](https://codecov.io/gh/101Loop/APIManager-Flutter/branch/master/graph/badge.svg?token=770R0EZKQG)
 ![license](https://img.shields.io/github/license/101Loop/APIManager-Flutter.svg)
 ![pr-welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
-![open-source](https://badges.frapsoft.com/os/v1/open-source.png?v=103)
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
 `APIManager-Flutter` is an API manager for flutter applications that can manage
 the API calls from a single place.<br>
