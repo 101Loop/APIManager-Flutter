@@ -17,7 +17,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    final _apiManager = APIManager.getInstance(baseUrl: '<replace-me>');
+    final _apiManager = APIManager.getInstance(baseUrl: 'https://reqres.in');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
         response = await _apiManager.request('/api/users/4');
@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       home: Scaffold(
         body: Center(
-          child: Text(response.data.toString()),
+          child: Text(response?.data.toString()),
         ),
       ),
     );

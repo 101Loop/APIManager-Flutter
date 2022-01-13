@@ -16,18 +16,18 @@ class APIManager {
   static http.Client client = http.Client();
 
   /// Base url of the requests
-  final String baseUrl;
+  final String? baseUrl;
 
   /// Instance of [APIManager]
-  static APIManager _instance;
+  static APIManager? _instance;
 
-  String _token;
+  String? _token;
 
   /// Private constructor
   APIManager._({this.baseUrl});
 
   /// Storage instance
-  static FlutterSecureStorage _storage;
+  static FlutterSecureStorage? _storage;
 
   /// static method to return the static singleton instance
   factory APIManager.getInstance({baseUrl}) {
@@ -35,31 +35,30 @@ class APIManager {
     if (_storage == null) _storage = FlutterSecureStorage();
 
     /// Singleton is already created, return the created one
-    if (_instance != null) return _instance;
+    if (_instance != null) return _instance!;
 
     /// create and return a new instance of [APIManager]
     assert(baseUrl != null);
     _instance = APIManager._(baseUrl: baseUrl);
-    return _instance;
+    return _instance!;
   }
 
   /// Save token, will be used throughout the app for authentication
-  Future<void> login(String token) async {
+  Future<void> login(String? token) async {
     assert(token != null && token.isNotEmpty);
 
-    /// set token
     _token = token;
     try {
-      await _storage.write(key: 'token', value: token);
+      await _storage!.write(key: 'token', value: token);
     } catch (_) {
       /// TODO: handle the [PlatformException] here
     }
   }
 
   /// Returns the token from the [_storage]
-  Future<String> _getToken() async {
+  Future<String?> _getToken() async {
     try {
-      _token = await _storage.read(key: 'token');
+      _token = await _storage!.read(key: 'token');
     } catch (_) {
       /// TODO: handle the [PlatformException] here
     }
@@ -76,7 +75,7 @@ class APIManager {
   Future<void> logout() async {
     /// clear the storage
     try {
-      await _storage.deleteAll();
+      await _storage!.deleteAll();
     } catch (_) {
       /// TODO: handle the [PlatformException] here
     }
@@ -96,25 +95,25 @@ class APIManager {
   Future<Response> request(
     String endPoint, {
     APIMethod method = APIMethod.get,
-    Map data,
+    Map? data,
     bool isAuthenticated = true,
   }) async {
     /// Set url
-    final String url = baseUrl + endPoint;
+    final url = Uri.parse(baseUrl! + endPoint);
 
     /// Create non-auth header
     final headers = {'Content-Type': 'application/json'};
 
     /// Add bearer token, if the API call is to be authenticated
     if (isAuthenticated) {
-      String token = await _getToken();
+      String? token = await _getToken();
 
       // TODO: add an assertion or check here, for null token
 
       headers.addAll({'Authorization': 'Bearer $token}'});
     }
 
-    http.Response response;
+    late http.Response response;
 
     /// switch on the basis of method provided and make relevant API call
     switch (method) {
@@ -149,10 +148,9 @@ class APIManager {
   /// [data] - Map representation of data to be posted along with the file
   /// [isAuthenticated] - if the API is to be authenticated or not
   Future<Response> uploadFile(String endPoint, File file, String fileKey,
-      {Map<String, String> data, bool isAuthenticated = true}) async {
-    assert(endPoint != null && endPoint.isNotEmpty);
-    assert(file != null);
-    assert(fileKey != null && fileKey.isNotEmpty);
+      {Map<String, String>? data, bool isAuthenticated = true}) async {
+    assert(endPoint.isNotEmpty);
+    assert(fileKey.isNotEmpty);
 
     /// Common header
     var headers = {'Content-Type': 'application/json'};
@@ -164,9 +162,9 @@ class APIManager {
 
     /// Create multipart request
     final mimeTypeData =
-        lookupMimeType(file.path, headerBytes: [0xFF, 0xD8]).split('/');
+        lookupMimeType(file.path, headerBytes: [0xFF, 0xD8])!.split('/');
     final multipartRequest =
-        http.MultipartRequest('POST', Uri.parse(baseUrl + endPoint));
+        http.MultipartRequest('POST', Uri.parse(baseUrl! + endPoint));
     final _file = await http.MultipartFile.fromPath(fileKey, file.path,
         contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
 
@@ -194,7 +192,7 @@ class APIManager {
 
     bool isSuccessful = statusCode >= 200 && statusCode < 300;
 
-    String error;
+    String error = '';
     if (!isSuccessful) {
       switch (statusCode) {
         case HttpStatus.movedPermanently:
