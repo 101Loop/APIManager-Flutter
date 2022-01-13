@@ -9,7 +9,8 @@ class Response {
 
   Response({
     this.data,
-    this.statusCode = -1,   // -1 will be returned if the response couldn't be processed somehow
+    this.statusCode =
+        -1, // -1 will be returned if the response couldn't be processed somehow
     this.error,
     this.rawData,
     this.isSuccessful,
