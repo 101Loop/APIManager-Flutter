@@ -1,6 +1,6 @@
 name: flutter_api_manager
 description: APIManager-Flutter is a flutter library that can manage the API calls from a single place.
-version: 0.0.1
+version: 1.0.0
 homepage: https://github.com/101Loop/APIManager-Flutter
 
 environment:
