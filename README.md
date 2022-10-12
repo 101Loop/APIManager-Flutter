@@ -90,7 +90,3 @@ You are always WELCOME! We are excited to see your awesome PRs.
 
 NOTE: Please abide by the
 [CODE OF CONDUCT.](https://github.com/101Loop/APIManager-Flutter/blob/master/CODE_OF_CONDUCT.md)
-
-## Author & Maintainer ✒️
-
-[Dipanshu](https://github.com/iamdipanshusingh)
