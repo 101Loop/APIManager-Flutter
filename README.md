@@ -89,7 +89,7 @@ Logout when you want to clear the token
 
 [Here's a way to start contributing](https://github.com/101Loop/APIManager-Flutter/blob/master/CONTRIBUTING.md)
 
-You are always WELCOME! We are are excited to see your awesome PRs.
+You are always WELCOME! We are excited to see your awesome PRs.
 
 NOTE: Please abide by the
 [CODE OF CONDUCT.](https://github.com/101Loop/APIManager-Flutter/blob/master/CODE_OF_CONDUCT.md)
