@@ -38,14 +38,11 @@ android {
 }
 ```
 
-## Usage
-To use this package, add `flutter_api_manager` as a dependency in your `pubspec.yaml` file.
-``` dart
-...
-flutter_api_manager: <latest_version>
-...
-```
-### Example
+## Installation
+To install this package, run
+> flutter pub add flutter_api_manager
+
+### Usage
 
 Create a singleton and make requests
 ``` dart
