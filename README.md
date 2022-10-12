@@ -22,7 +22,7 @@ Here's the list of your all-in-one service
 - [ ] Support Multi environment base url
 
 ## Android Compatibility
-Since this package is dependent on `flutter_secure_storage` a `minSdkVersion` of >=18 is required
+Since this package is dependent on `flutter_secure_storage` a `minSdkVersion` of 18 is required
 
 android > app > build.gradle
 ```
