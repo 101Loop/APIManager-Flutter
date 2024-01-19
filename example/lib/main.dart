@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_api_manager/flutter_api_manager.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   State<MyApp> createState() => _MyAppState();
+
 }
 
 class _MyAppState extends State<MyApp> {
-  Response response;
+  Response? response;
 
   @override
   void initState() {
@@ -34,7 +37,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       home: Scaffold(
         body: Center(
-          child: Text(response?.data.toString()),
+          child: Text(response!.data.toString()),
         ),
       ),
     );
