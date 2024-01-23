@@ -17,6 +17,7 @@ class APIManager {
 
   /// Base url of the requests
   final String? baseUrl;
+  final Map<String, String>? headers;
 
   /// Instance of [APIManager]
   static APIManager? _instance;
@@ -24,13 +25,13 @@ class APIManager {
   String? _token;
 
   /// Private constructor
-  APIManager._({this.baseUrl});
+  APIManager._({this.baseUrl, this.headers});
 
   /// Storage instance
   static FlutterSecureStorage? _storage;
 
   /// static method to return the static singleton instance
-  factory APIManager.getInstance({baseUrl}) {
+  factory APIManager.getInstance({baseUrl, headers}) {
     /// Initialize storage, if not already initialized
     if (_storage == null) _storage = FlutterSecureStorage();
 
@@ -39,7 +40,7 @@ class APIManager {
 
     /// create and return a new instance of [APIManager]
     assert(baseUrl != null);
-    _instance = APIManager._(baseUrl: baseUrl);
+    _instance = APIManager._(baseUrl: baseUrl, headers: headers);
     return _instance!;
   }
 
@@ -91,18 +92,20 @@ class APIManager {
   /// [endPoint] - Endpoint of the API
   /// [method] - Type of [APIMethod]. Defaults to [APIMethod.get] See [APIMethod] enum for all the available methods
   /// [data] - data to be passed in the request in [Map] format
+  /// [headers] - HTTP headers
   /// [isAuthenticated] - if authenticated, Bearer token authorization will be added, otherwise not
   Future<Response> request(
     String endPoint, {
     APIMethod method = APIMethod.get,
     Map? data,
+    Map<String, String>? headers,
     bool isAuthenticated = true,
   }) async {
     /// Set url
     final url = Uri.parse(baseUrl! + endPoint);
 
     /// Create non-auth header
-    final headers = {'Content-Type': 'application/json'};
+    final _headers = {'Content-Type': 'application/json'};
 
     /// Add bearer token, if the API call is to be authenticated
     if (isAuthenticated) {
@@ -110,7 +113,15 @@ class APIManager {
 
       // TODO: add an assertion or check here, for null token
 
-      headers.addAll({'Authorization': 'Bearer $token}'});
+      _headers.addAll({'Authorization': 'Bearer $token}'});
+    }
+
+    if (headers != null) {
+      _headers.addAll(headers);
+    }
+
+    if (this.headers != null) {
+      _headers.addAll(this.headers!);
     }
 
     late http.Response response;
@@ -118,22 +129,22 @@ class APIManager {
     /// switch on the basis of method provided and make relevant API call
     switch (method) {
       case APIMethod.get:
-        response = await client.get(url, headers: headers);
+        response = await client.get(url, headers: _headers);
         break;
       case APIMethod.post:
         response =
-            await client.post(url, headers: headers, body: json.encode(data));
+            await client.post(url, headers: _headers, body: json.encode(data));
         break;
       case APIMethod.put:
         response =
-            await client.put(url, headers: headers, body: json.encode(data));
+            await client.put(url, headers: _headers, body: json.encode(data));
         break;
       case APIMethod.patch:
         response =
-            await client.patch(url, headers: headers, body: json.encode(data));
+            await client.patch(url, headers: _headers, body: json.encode(data));
         break;
       case APIMethod.delete:
-        response = await client.delete(url, headers: headers);
+        response = await client.delete(url, headers: _headers);
         break;
     }
 
@@ -146,30 +157,44 @@ class APIManager {
   /// [file] - the file which is to be uploaded
   /// [fileKey] - file will be posted under this key
   /// [data] - Map representation of data to be posted along with the file
+  /// [headers] - HTTP headers
+  /// [method] - if need use method PATCH instead of POST
   /// [isAuthenticated] - if the API is to be authenticated or not
   Future<Response> uploadFile(String endPoint, File file, String fileKey,
-      {Map<String, String>? data, bool isAuthenticated = true}) async {
+      {Map<String, String>? data,
+      Map<String, String>? headers,
+      APIMethod method = APIMethod.post,
+      bool isAuthenticated = true}) async {
     assert(endPoint.isNotEmpty);
     assert(fileKey.isNotEmpty);
 
     /// Common header
-    var headers = {'Content-Type': 'application/json'};
+    var _headers = {'Content-Type': 'application/json'};
 
     /// if the API is to be authenticated, add a bearer token
     if (isAuthenticated) {
-      headers.addAll({'Authorization': 'Bearer ${await _getToken()}'});
+      _headers.addAll({'Authorization': 'Bearer ${await _getToken()}'});
+    }
+
+    if (headers != null) {
+      _headers.addAll(headers);
+    }
+    if (this.headers != null) {
+      _headers.addAll(this.headers!);
     }
 
     /// Create multipart request
     final mimeTypeData =
         lookupMimeType(file.path, headerBytes: [0xFF, 0xD8])!.split('/');
-    final multipartRequest =
-        http.MultipartRequest('POST', Uri.parse(baseUrl! + endPoint));
+
+
+    final multipartRequest = http.MultipartRequest('POST', Uri.parse(baseUrl! + endPoint));
+
     final _file = await http.MultipartFile.fromPath(fileKey, file.path,
         contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
 
-    /// Add headers, files and fields to the multipart request
-    multipartRequest.headers.addAll(headers);
+    /// Add _headers, files and fields to the multipart request
+    multipartRequest.headers.addAll(_headers);
     multipartRequest.files.add(_file);
     if (data != null) multipartRequest.fields.addAll(data);
 

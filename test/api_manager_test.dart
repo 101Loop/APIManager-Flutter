@@ -14,7 +14,7 @@ void main() {
   group('test singleton instance', () {
     test('check only single instance is created', () {
       /// Create an instance of [APIManager]
-      APIManager instance = APIManager.getInstance(baseUrl: 'base_url');
+      APIManager instance = APIManager.getInstance(baseUrl: 'base_url', headers: {'test': 'test'});
 
       /// Create another instance of [APIManager]
       APIManager instance1 = APIManager.getInstance();
@@ -22,6 +22,8 @@ void main() {
       /// Check if the same instance is returned or not
       expect(instance.baseUrl, 'base_url');
       expect(instance1.baseUrl, 'base_url');
+      expect(instance.headers, {'test': 'test'});
+      expect(instance1.headers, {'test': 'test'});
     });
 
     test('check null base url assertion', () {
